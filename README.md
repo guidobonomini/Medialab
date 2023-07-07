@@ -54,3 +54,4 @@ To-do's:
 - Create json web token service for middleware betweeen services
 - Generate tests for api methods for users service
 - Generate middleware handler for users service
+- Fix CI tests to adapt to proyect
