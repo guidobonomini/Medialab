@@ -1,7 +1,10 @@
-Medialab Test
+Medialab Test Workbench
 ================
 
-Medialab - Guido Bonomini
+Medialab Test Workbench
+ - Guido Bonomini
+
+ Testing grounds for Medialab test
 
 :License: MIT
 
