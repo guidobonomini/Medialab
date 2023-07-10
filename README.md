@@ -4,9 +4,10 @@ Medialab Test Workbench
 Medialab Test Workbench
  - Guido Bonomini
 
- Testing grounds for Medialab test
 
-:License: MIT
+
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
 Docker
