@@ -3,6 +3,8 @@ version: '3'
 volumes:
   medialab_local_postgres_data: {}
   medialab_local_postgres_data_backups: {}
+  medialab_polls_db_data: {}
+  medialab_polls_db_data_backups: {}
 
 services:
   django: &django
@@ -35,18 +37,36 @@ services:
     env_file:
       - ./.envs/.local/.postgres
 
-  users:
+  polls:
     build: 
       context: .
-      dockerfile: ./services/users/Dockerfile
-    image: medialab_local_django
-    command: python manage.py runserver 0.0.0.0:8001
+      dockerfile: ./services/polls/Dockerfile
+    image: medialab_polls
+    container_name: medialab_polls
     volumes:
-      - ./services/users/src:/app
+      - ./services/polls:/app
+    depends_on:
+      - polls_db
+      - redis
+    env_file:
+      - ./.envs/.local/.polls
+      - ./.envs/.local/.polls_db
     ports:
       - "8001:8001"
-    environment:
-      PYTHONDONTWRITEBYTECODE: 1
+    command: /start
+
+  polls_db:
+    build:
+      context: .
+      dockerfile: ./compose/production/polls_db/Dockerfile
+    restart: always
+    image: medialab_polls_db
+    container_name: medialab_polls_db
+    volumes:
+      - medialab_polls_db_data:/var/lib/postgresql/data
+      - medialab_polls_db_data_backups:/backups
+    env_file:
+      - ./.envs/.local/.polls_db
 
   redis:
     image: redis:6

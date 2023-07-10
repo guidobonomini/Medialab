@@ -30,3 +30,5 @@ EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
 TEMPLATES[0]["OPTIONS"]["debug"] = True  # type: ignore # noqa: F405
 # Your stuff...
 # ------------------------------------------------------------------------------
+# Polls Microservice Config
+POLLS_URL = "http://polls:8001"

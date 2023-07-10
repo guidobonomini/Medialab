@@ -31,16 +31,36 @@ services:
     env_file:
       - ./.envs/.production/.postgres
 
-    users:
-      dockerfile: Dockerfile
-      build: services/users
-      command: python manage.py runserver 0.0.0.0:8000
-      volumes:
-        - ./services/users/src:/app
-      ports:
-        - "8001:8000"
-      environment:
-        PYTHONDONTWRITEBYTECODE: 1
+  polls:
+    build: 
+      context: .
+      dockerfile: ./services/polls/Dockerfile
+    image: medialab_polls
+    container_name: medialab_polls
+    volumes:
+      - ./services/polls:/app
+    depends_on:
+      - polls_postgres
+      - redis
+    env_file:
+      - ./.envs/.local/.polls
+      - ./.envs/.local/.polls_postgres
+    ports:
+      - "8001:8001"
+    command: ./services/polls/start
+
+  polls_db:
+    build:
+      context: .
+      dockerfile: ./compose/production/polls_db/Dockerfile
+    restart: always
+    image: medialab_polls_db
+    container_name: medialab_polls_db
+    volumes:
+      - medialab_polls_db_data:/var/lib/postgresql/data
+      - medialab_polls_db_data_backups:/backups
+    env_file:
+      - ./.envs/.local/.polls_db
 
   traefik:
     build:
